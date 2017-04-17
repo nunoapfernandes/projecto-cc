@@ -71,32 +71,30 @@ public class PDUManager {
         }
     }
 
-    public PDUManager generatePDU(byte[] pdu) throws TypeNotFoundException{
-        PDUManager result = new PDUManager();
-        String adsa = pdu.toString();
-        System.out.println(adsa);
-        String[]fields = pdu.toString().split(",");
-        String aux;
-        aux = fields[0].substring(2);
-        System.out.println(aux);
-        if(aux==null || Integer.getInteger(aux)>3 || Integer.getInteger(aux)<1){
+    public void generatePDU(byte[] pdu) throws TypeNotFoundException{
+        String res = new String(pdu);
+
+        String[]fields = res.split(",");
+
+        String type, ip,timestamp;
+
+        type = fields[0].substring(3);
+        ip = fields[1].substring(4);
+        timestamp = fields[2].substring(3);
+
+        if(Integer.parseInt(type)>3 || Integer.parseInt(type)<1){
             throw new TypeNotFoundException();
         }
-        else result.setType(Integer.getInteger(aux));
-        aux = fields[1].substring(2);
-
-        if(aux != null){
-            try{result.setIp_address(InetAddress.getByName(aux));}
-            catch (UnknownHostException e){e.printStackTrace();}
+        else {
+            this.setType(Integer.parseInt(type));
         }
 
-        aux = fields[2].substring(2);
+        try{this.setIp_address(InetAddress.getByName(ip));}
+        catch (UnknownHostException|NullPointerException e){e.printStackTrace();}
 
-        if(aux!= null){
-            result.setTimestamp(Long.getLong(aux));
-        }
+        this.setTimestamp(Long.parseLong(timestamp));
 
-        return result;
+
     }
 
     @Override
