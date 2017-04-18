@@ -8,19 +8,22 @@ public class Client_Info {
     private double round_trip_time;
     private int tcp_connections;
     private int packet_loss;
+    private double score;
 
     public Client_Info(){
         this.ip_address = null;
         this.round_trip_time = 50000;
         this.tcp_connections = 0;
         this.packet_loss = 50000;
+        this.setScore(50000);
     }
 
-    public Client_Info(InetAddress ip_address, double round_trip_time, int tcp_connections, int packet_loss){
+    public Client_Info(InetAddress ip_address, double round_trip_time, int tcp_connections, int packet_loss, int score){
         this.ip_address = ip_address;
         this.round_trip_time = round_trip_time;
         this.tcp_connections = tcp_connections;
         this.packet_loss = packet_loss;
+        this.setScore(score);
     }
 
     public Client_Info(Client_Info client_info){
@@ -28,6 +31,7 @@ public class Client_Info {
         this.round_trip_time = client_info.getRound_trip_time();
         this.tcp_connections = client_info.getTcp_connections();
         this.packet_loss = client_info.getPacket_loss();
+        this.setScore(client_info.getScore());
 
     }
 
@@ -63,6 +67,10 @@ public class Client_Info {
         this.packet_loss = packet_loss;
     }
 
+    public double getScore() {return score; }
+
+    public void setScore(double score) {        this.score = score;    }
+
 
     @Override
     public String toString(){
@@ -95,4 +103,6 @@ public class Client_Info {
             );
         }
     }
+
+
 }
