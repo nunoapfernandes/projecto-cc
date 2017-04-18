@@ -7,17 +7,20 @@ public class PDUManager {
     private int type; /* 1 - REGISTER; 2 - PROBE ; 3 - ANSWER*/
     private InetAddress ip_address;
     private long timestamp;
+    private int counter;
 
     public PDUManager(){
         this.type = 0;
         this.ip_address = null;
         this.timestamp = 0;
+        this.counter = 0;
     }
 
-    public PDUManager(int type, InetAddress ip_address, long timestamp){
+    public PDUManager(int type, InetAddress ip_address, long timestamp, int counter){
         this.type = type;
         this.ip_address = ip_address;
         this.timestamp = timestamp;
+        this.counter = counter;
     }
 
     public PDUManager(byte[] message){
@@ -32,6 +35,7 @@ public class PDUManager {
         this.type = p.getType();
         this.ip_address = p.getIp_address();
         this.timestamp = p.getTimestamp();
+        this.counter = p.getCounter();
     }
 
     public int getType(){return this.type;}
@@ -42,6 +46,9 @@ public class PDUManager {
 
     public long getTimestamp(){return this.timestamp;}
     public void setTimestamp(long timestamp){this.timestamp = timestamp;}
+
+    public int getCounter() { return counter; }
+    public void setCounter(int counter) { this.counter = counter; }
 
     public byte[] buildPDU(){
         return this.toString().getBytes();
