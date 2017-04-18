@@ -50,6 +50,8 @@ public class PDUManager {
     public int getCounter() { return counter; }
     public void setCounter(int counter) { this.counter = counter; }
 
+    public void incrementCounter(){this.counter++;}
+
     public byte[] buildPDU(){
         return this.toString().getBytes();
     }
