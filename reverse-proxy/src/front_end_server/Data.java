@@ -57,4 +57,8 @@ public class Data {
         client_info.setRound_trip_time(rtt);
         Score(client_info);
     }
+
+    public Client_Info getClientInfo(InetAddress inetAddress){
+        return this.Registo.get(inetAddress);
+    }
 }

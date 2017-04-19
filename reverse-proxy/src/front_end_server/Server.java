@@ -16,7 +16,6 @@ public class Server {
     public static void main(String[] args){
 
         Data backpool_servers_data = new Data();
-        Queue<PDUManager> messages = new Queue<PDUManager>();
 
         /*PDUManager teste = new PDUManager();
 

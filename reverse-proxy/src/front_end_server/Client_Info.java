@@ -58,6 +58,8 @@ public class Client_Info {
 
     public void setPacket_loss(int packet_loss) { this.packet_loss = packet_loss; }
 
+    public void incrementPacket_loss(int increment){this.packet_loss+=increment;}
+
     public double getScore() { return score; }
 
     public void setScore(double score) { this.score = score; }
@@ -72,7 +74,7 @@ public class Client_Info {
 
     public void incrementsReceivedCounter() { this.lastReceivedCounter++; }
 
-    public void incrementSentCounter() { this.lastSentCounter++;}
+    public void incrementSentCounter(int increment) { this.lastSentCounter++;}
 
 
     @Override
