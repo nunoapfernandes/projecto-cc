@@ -6,13 +6,19 @@ import pdu_data.TypeNotFoundException;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Queue;
 
 public class Server {
+
 
     private Server(){}
 
     public static void main(String[] args){
-        PDUManager teste = new PDUManager();
+
+        Data backpool_servers_data = new Data();
+        Queue<PDUManager> messages = new Queue<PDUManager>();
+
+        /*PDUManager teste = new PDUManager();
 
         try{
             teste.setType(1);
@@ -27,6 +33,9 @@ public class Server {
 
             System.out.println(res.toString());
 
-        }catch (UnknownHostException e){e.printStackTrace();}
+        }catch (UnknownHostException e){e.printStackTrace();}*/
+
+
+
     }
 }
