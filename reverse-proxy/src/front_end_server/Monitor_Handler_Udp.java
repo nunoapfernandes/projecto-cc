@@ -15,13 +15,11 @@ public class Monitor_Handler_Udp extends Thread{
 
     private Client_Info client_info;
     private PDUManager pdu;
-    private int counter;
 
 
     public Monitor_Handler_Udp(Client_Info client_info){
         this.client_info = client_info;
         this.pdu = new PDUManager();
-        this.counter=1;
     }
 
     /** Por cada pedido de monitoramento, uma thread é arrancada com o objectivo de mandar probes a cada 5 segundos */
@@ -31,7 +29,7 @@ public class Monitor_Handler_Udp extends Thread{
         this.pdu.setType(2);
         /** É necessário mandar um timestamp para cálculo do Round Trip Time */
         this.pdu.setTimestamp(System.currentTimeMillis());
-        this.pdu.setCounter(counter);
+        this.pdu.setCounter(1);
 
 
         try{
@@ -45,6 +43,7 @@ public class Monitor_Handler_Udp extends Thread{
                 /** Preparação e envio do PDU para o servidor da back pool, tratado como cliente */
                 DatagramPacket send_packet = new DatagramPacket(data,data.length,client_info.getIp_address(),5555);
                 client.send(send_packet);
+                this.client_info.incrementSentCounter();
                 /** Timer para execução do ciclo a cada 5 segundos*/
                 Thread.sleep(5*1000);
 

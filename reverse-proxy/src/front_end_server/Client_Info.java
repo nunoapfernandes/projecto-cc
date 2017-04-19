@@ -74,7 +74,7 @@ public class Client_Info {
 
     public void incrementsReceivedCounter() { this.lastReceivedCounter++; }
 
-    public void incrementSentCounter(int increment) { this.lastSentCounter++;}
+    public void incrementSentCounter() { this.lastSentCounter++;}
 
 
     @Override

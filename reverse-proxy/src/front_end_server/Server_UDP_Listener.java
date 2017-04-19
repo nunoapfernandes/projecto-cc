@@ -15,9 +15,9 @@ public class Server_UDP_Listener extends Thread{
     private Data backpool_server_data;
     private Map<Client_Info,Monitor_Handler_Udp> udp_handlers;
 
-    public Server_UDP_Listener(Data backpool_server_data){
+    public Server_UDP_Listener(Data backpool_server_data, Map<Client_Info,Monitor_Handler_Udp> udp_handlers){
         this.backpool_server_data = backpool_server_data;
-        this.udp_handlers = new HashMap<>();
+        this.udp_handlers = udp_handlers;
     }
 
     @Override
