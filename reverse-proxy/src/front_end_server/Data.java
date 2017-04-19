@@ -1,19 +1,17 @@
 package front_end_server;
 
 
+import java.awt.*;
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Data {
 
-    ArrayList<Client_Info> Ranking;
+    PriorityQueue<Client_Info> Ranking;
     HashMap<InetAddress,Client_Info> Registo;
 
     public Data() {
-       Ranking = new ArrayList<Client_Info>();
+       Ranking = new PriorityQueue<Client_Info>(100,new ServerComparator());
        Registo = new HashMap<InetAddress,Client_Info>();
     }
 
@@ -36,7 +34,27 @@ public class Data {
             Ranking.add(client_info);
             Registo.put(client_info.getIp_address(),client_info);
 
-            Collections.sort(Ranking, new ServerComparator());
 
+    }
+
+    public Client_Info nextserver(){
+        return Ranking.poll();
+    }
+
+    public void lostTCP(Client_Info client_info){
+        client_info.setTcp_connections(client_info.getTcp_connections()-1);
+        Score(client_info);
+    }
+
+    public void newTCP(Client_Info client_info){
+        client_info.setTcp_connections(client_info.getTcp_connections()+1);
+        Score(client_info);
+    }
+
+    public void update(Client_Info client_info, double rtt, int pl){
+
+        client_info.setPacket_loss(pl);
+        client_info.setRound_trip_time(rtt);
+        Score(client_info);
     }
 }
