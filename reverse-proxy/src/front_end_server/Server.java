@@ -39,6 +39,7 @@ public class Server {
             }
         } while (mainMenu.getOption()!=0);
 
+        listener.interrupt();
         System.out.println("Bye!");
 
         /*PDUManager teste = new PDUManager();
