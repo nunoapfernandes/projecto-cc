@@ -23,6 +23,20 @@ public class PDUManager {
         this.counter = counter;
     }
 
+    public PDUManager(int type, InetAddress ip_address, int counter){
+        this.type = type;
+        this.ip_address = ip_address;
+        this.timestamp = 0;
+        this.counter = counter;
+    }
+
+    public PDUManager(int type, InetAddress ip_address){
+        this.type = type;
+        this.ip_address = ip_address;
+        this.timestamp = 0;
+        this.counter = 0;
+    }
+
     public PDUManager(byte[] message){
         try {
             generatePDU(message);
