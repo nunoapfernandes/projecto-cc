@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 
 public class Server {
 
-    private Server(){};
+    private Server(){}
 
     public static void main(String[] args){
         PDUManager teste = new PDUManager();
