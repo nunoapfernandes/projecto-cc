@@ -44,7 +44,7 @@ public class Monitor_Handler_Udp extends Thread{
             /** Transformação dos PDUs para array de bytes para envio*/
             byte[] data = pdu.buildPDU();
 
-            while(true){
+            while(!Thread.interrupted()){
                 /** Preparação e envio do PDU para o servidor da back pool, tratado como cliente */
                 DatagramPacket send_packet = new DatagramPacket(data,data.length,client_info.getIp_address(),5555);
                 client.send(send_packet);

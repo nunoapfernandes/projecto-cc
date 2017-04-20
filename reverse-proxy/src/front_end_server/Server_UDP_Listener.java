@@ -28,7 +28,7 @@ public class Server_UDP_Listener extends Thread{
             incoming_socket= new DatagramSocket(5555);
             byte[] data_received = new byte[1024];
 
-            while (true){
+            while (!Thread.interrupted()){
                 DatagramPacket packet_received = new DatagramPacket(data_received,data_received.length);
                 incoming_socket.receive(packet_received);
 

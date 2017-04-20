@@ -1,5 +1,7 @@
 package front_end_server;
 
+import sun.awt.windows.ThemeReader;
+
 import java.util.Map;
 
 public class Server_Monitor_Cleaner extends Thread {
@@ -18,6 +20,11 @@ public class Server_Monitor_Cleaner extends Thread {
             udp_handlers.forEach( (k,v) ->
                     checkMonitor(k,v)
             );
+            try {
+                Thread.sleep(2 * 1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
     }
