@@ -25,11 +25,7 @@ public class Server_Monitor_Cleaner extends Thread {
     private void checkMonitor(Client_Info k, Monitor_Handler_Udp v) {
         if (k.getLastSentCounter() - k.getLastReceivedCounter() > 6) {
             udp_handlers.remove(k);
-
-            /** Falta remover do Data
-             *  k.removeClientInfo()
-             * */
-
+            backpool_server_data.removeClientInfo(k);
             v.interrupt();
         }
     }
