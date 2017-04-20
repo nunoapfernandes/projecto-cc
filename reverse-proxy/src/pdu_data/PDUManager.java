@@ -99,11 +99,12 @@ public class PDUManager {
 
         String[]fields = res.split(",");
 
-        String type, ip,timestamp;
+        String type, ip,timestamp,counter;
 
         type = fields[0].substring(3);
         ip = fields[1].substring(4);
         timestamp = fields[2].substring(3);
+        counter = fields[3].substring(3);
 
         if(Integer.parseInt(type)>3 || Integer.parseInt(type)<1){
             throw new TypeNotFoundException();
@@ -115,8 +116,10 @@ public class PDUManager {
         try{this.setIp_address(InetAddress.getByName(ip));}
         catch (UnknownHostException|NullPointerException e){e.printStackTrace();}
 
-        this.setTimestamp(Long.parseLong(timestamp));
 
+        this.setTimestamp(Long.parseLong(timestamp.trim()));
+
+        this.setCounter(Integer.parseInt(counter.trim()));
 
     }
 
@@ -126,7 +129,8 @@ public class PDUManager {
 
         sp.append("ty=" + this.getType() + ",");
         sp.append("ip=" + this.getIp_address()+ ",");
-        sp.append("ti=" + this.getTimestamp());
+        sp.append("ti=" + this.getTimestamp()+ ",");
+        sp.append("ct=" + this.getCounter());
 
         return sp.toString();
     }
@@ -145,7 +149,8 @@ public class PDUManager {
             PDUManager p = (PDUManager) o;
             return ((this.getType()==p.getType())&&
                     (this.getIp_address().equals(p.getIp_address())) &&
-                    (this.getTimestamp()==p.getTimestamp())
+                    (this.getTimestamp()==p.getTimestamp()) &&
+                    (this.getCounter() == p.getCounter())
             );
         }
     }
