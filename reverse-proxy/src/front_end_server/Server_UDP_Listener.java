@@ -26,7 +26,7 @@ public class Server_UDP_Listener extends Thread{
         PDUManager pdu_received = new PDUManager();
         try {
             incoming_socket= new DatagramSocket(5555);
-            byte[] data_received = pdu_received.buildPDU();
+            byte[] data_received = new byte[1024];
 
             while (true){
                 DatagramPacket packet_received = new DatagramPacket(data_received,data_received.length);
@@ -46,7 +46,9 @@ public class Server_UDP_Listener extends Thread{
                     backpool_server_data.Score(new_monitor_udp);
                     /** Inicia nova thread de probing para o novo monitor */
                     Monitor_Handler_Udp new_handler_monitor_udp = new Monitor_Handler_Udp(new_monitor_udp);
+                    new_handler_monitor_udp.start();
                     /** Insere na lista de monitores já presentes */
+
                     udp_handlers.put(new_monitor_udp,new_handler_monitor_udp);
                 }
 

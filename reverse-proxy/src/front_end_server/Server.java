@@ -67,7 +67,7 @@ public class Server {
     public static void loadMenu(){
         String[] main_menu = {
                 "Show nr of servers",
-                "List ip of monitored servers"
+                "List ip of monitored servers",
         };
 
         mainMenu = new Menu(main_menu);

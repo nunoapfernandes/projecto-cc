@@ -13,8 +13,9 @@ public class MonitorUDP {
 
     public static void main(String[] args) throws IOException, TypeNotFoundException {
 
-        InetAddress MyIPAddress = InetAddress.getByName("localhost");
+        InetAddress MyIPAddress = InetAddress.getLocalHost();
         InetAddress ServerIPAddress = InetAddress.getByName("192.168.1.172");
+        System.out.println(MyIPAddress.toString());
         PDUManager message = new PDUManager(1, MyIPAddress);
 
         DatagramSocket clientSocket = new DatagramSocket();
