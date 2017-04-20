@@ -23,6 +23,13 @@ public class PDUManager {
         this.counter = counter;
     }
 
+    public PDUManager(int type, InetAddress ip_address, long timestamp){
+        this.type = type;
+        this.ip_address = ip_address;
+        this.timestamp = timestamp;
+        this.counter = 0;
+    }
+
     public PDUManager(int type, InetAddress ip_address, int counter){
         this.type = type;
         this.ip_address = ip_address;
