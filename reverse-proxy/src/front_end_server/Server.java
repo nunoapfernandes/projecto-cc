@@ -14,15 +14,15 @@ public class Server {
 
 
     private Server(){}
-
     private static Menu mainMenu;
 
     public static void main(String[] args){
 
         Data backpool_servers_data = new Data();
-        Map<Client_Info,Monitor_Handler_Udp> udp_handlers = new HashMap<>();
+        Map<InetAddress,Monitor_Handler_Udp> udp_handlers = new HashMap<>();
+        int burstSize = 100;
 
-        Server_UDP_Listener listener = new Server_UDP_Listener(backpool_servers_data,udp_handlers);
+        Server_UDP_Listener listener = new Server_UDP_Listener(backpool_servers_data, udp_handlers, burstSize);
 
         listener.start();
 

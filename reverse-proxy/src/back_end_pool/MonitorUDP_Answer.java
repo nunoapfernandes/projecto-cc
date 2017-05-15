@@ -27,7 +27,7 @@ public class MonitorUDP_Answer extends Thread {
                 messageReceived.generatePDU(receiveData);
 
                 //ENVIA UM PDUManager DO TIPO ANSWER, COM O PRÓPRIO IP E O CONTADOR DA ULTIMA MENSAGEM QUE RECEBEU
-                PDUManager message = new PDUManager(3, MyIPAddress, messageReceived.getCounter());
+                PDUManager message = new PDUManager(3, MyIPAddress, messageReceived.getTimestamp(), messageReceived.getCounter());
                 DatagramPacket sendPacket = new DatagramPacket(message.buildPDU(), message.buildPDU().length, ServerIPAddress, 5555);
                 clientSocket.send(sendPacket);
             }

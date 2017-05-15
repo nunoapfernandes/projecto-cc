@@ -13,11 +13,13 @@ public class Monitor_Handler_Udp extends Thread{
 
     private Client_Info client_info;
     private PDUManager pdu;
+    private int burstSize = 100;
 
 
-    public Monitor_Handler_Udp(Client_Info client_info){
+    public Monitor_Handler_Udp(Client_Info client_info, int burstSize){
         this.client_info = client_info;
         this.pdu = new PDUManager();
+        this.burstSize = burstSize;
     }
 
     /** Por cada pedido de monitoramento, uma thread é arrancada com o objectivo de mandar probes a cada 5 segundos */
@@ -25,9 +27,6 @@ public class Monitor_Handler_Udp extends Thread{
     public void run(){
         /** O tipo de cada probe no PDU genérico é 2 */
         this.pdu.setType(2);
-        /** É necessário mandar um timestamp para cálculo do Round Trip Time */
-        this.pdu.setTimestamp(System.currentTimeMillis());
-        this.pdu.setCounter(1);
         try{
             this.pdu.setIp_address(InetAddress.getByName("192.168.1.172"));
         }catch (UnknownHostException e){
@@ -40,25 +39,21 @@ public class Monitor_Handler_Udp extends Thread{
         try{
             /** Criação do socket para envio dos PDUS */
             DatagramSocket client = new DatagramSocket();
-
-            /** Transformação dos PDUs para array de bytes para envio*/
-            byte[] data = pdu.buildPDU();
-
             while(!Thread.interrupted()){
-                /** Preparação e envio do PDU para o servidor da back pool, tratado como cliente */
-                DatagramPacket send_packet = new DatagramPacket(data,data.length,client_info.getIp_address(),5555);
-                client.send(send_packet);
-                this.client_info.incrementSentCounter();
-                System.out.println(client_info.getIp_address());
-                System.out.println("Enviado");
+                this.pdu.incrementCounter();
+                /** Preparação e envio de burst de pacotes a enviar */
+                for (int i = 0; i < this.burstSize; i++) {
+                    /** Preparação e envio do PDU para o servidor da back pool, tratado como cliente */
+                    this.pdu.setTimestamp(System.currentTimeMillis());
+                    byte[] data = pdu.buildPDU();
+                    DatagramPacket send_packet = new DatagramPacket(data,data.length,client_info.getIp_address(),5555);
+                    client.send(send_packet);
+                    System.out.println(client_info.getIp_address());
+                }
+                System.out.println("Burst de " + this.burstSize + " pacotes enviado");
                 /** Timer para execução do ciclo a cada 5 segundos*/
                 Thread.sleep(5*1000);
-
-                
-                this.pdu.setTimestamp(System.currentTimeMillis());
-                this.pdu.incrementCounter();
                 System.out.println(this.pdu.getCounter());
-                data = this.pdu.buildPDU();
             }
         }catch (SocketException|InterruptedException e){
             System.out.println("Socket Exception");

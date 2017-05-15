@@ -13,7 +13,7 @@ public class MonitorUDP_Register extends Thread {
                 InetAddress MyIPAddress = null;
                 MyIPAddress = InetAddress.getByName("172.16.82.129");
                 InetAddress ServerIPAddress = InetAddress.getByName("192.168.1.172");
-                PDUManager message = new PDUManager(1, MyIPAddress, System.currentTimeMillis());
+                PDUManager message = new PDUManager(1, MyIPAddress);
 
                 DatagramSocket clientSocket = new DatagramSocket(5555);
                 DatagramPacket sendPacket = new DatagramPacket(message.buildPDU(), message.buildPDU().length, ServerIPAddress, 5555);
