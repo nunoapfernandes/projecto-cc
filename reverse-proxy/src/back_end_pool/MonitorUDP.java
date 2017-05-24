@@ -1,9 +1,7 @@
 package back_end_pool;
 
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.Enumeration;
 
 public class MonitorUDP {
@@ -13,9 +11,10 @@ public class MonitorUDP {
     public static void main(String[] args)  {
         try {
             InetAddress ip_address = getLocalHostLANAddress();
+            DatagramSocket socket = new DatagramSocket(5555);
 
-            MonitorUDP_Register register = new MonitorUDP_Register(ip_address);
-            MonitorUDP_Answer answer = new MonitorUDP_Answer(ip_address);
+            MonitorUDP_Register register = new MonitorUDP_Register(ip_address, socket);
+            MonitorUDP_Answer answer = new MonitorUDP_Answer(ip_address, socket);
 
             register.start();
             answer.start();
@@ -33,6 +32,9 @@ public class MonitorUDP {
             answer.interrupt();
         }catch (UnknownHostException e){
             System.out.println("Não foi possivel obter o endereço IP desta máquina");
+            e.printStackTrace();
+        }catch (SocketException e){
+            System.out.println("Erro ao criar socket");
             e.printStackTrace();
         }
     }
