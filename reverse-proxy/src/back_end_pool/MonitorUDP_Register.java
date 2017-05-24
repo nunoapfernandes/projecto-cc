@@ -7,13 +7,17 @@ import java.net.*;
 
 public class MonitorUDP_Register extends Thread {
 
+    private InetAddress MyIPAddress;
+
+    public MonitorUDP_Register(InetAddress ip_address){
+        this.MyIPAddress = ip_address;
+    }
+
     public void run() {
         try {
-            while (true) {
-                InetAddress MyIPAddress = null;
-                MyIPAddress = InetAddress.getByName("172.16.82.129");
-                InetAddress ServerIPAddress = InetAddress.getByName("192.168.1.172");
-                PDUManager message = new PDUManager(1, MyIPAddress);
+            while (!Thread.interrupted()) {
+                InetAddress ServerIPAddress = InetAddress.getByName("10.3.3.10");
+                PDUManager message = new PDUManager(1, this.MyIPAddress);
 
                 DatagramSocket clientSocket = new DatagramSocket(5555);
                 DatagramPacket sendPacket = new DatagramPacket(message.buildPDU(), message.buildPDU().length, ServerIPAddress, 5555);
