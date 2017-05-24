@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 
 public class Monitor_Handler_TCP extends Thread {
 
-        int port = 80;
         Socket s;
         private Data backpool_servers_data;
 
@@ -28,8 +27,10 @@ public class Monitor_Handler_TCP extends Thread {
     public void run(){
         try {
             Client_Info serv = backpool_servers_data.nextserver();
+            backpool_servers_data.newTCP(serv);
+            backpool_servers_data.updateScore(serv);
             InetAddress ipudp = serv.getIp_address();
-            Socket web_server = new Socket(ipudp.toString(),80);
+            Socket web_server = new Socket(ipudp,80);
 
 
             InputStream clientIn = s.getInputStream();
@@ -49,8 +50,8 @@ public class Monitor_Handler_TCP extends Thread {
             clientOut.write(request);
             clientOut.flush();
 
-
-
+            backpool_servers_data.lostTCP(serv);
+            backpool_servers_data.updateScore(serv);
 
         } catch (IOException ex) {
             ex.printStackTrace();

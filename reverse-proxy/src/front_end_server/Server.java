@@ -20,7 +20,6 @@ public class Server {
     public static void main(String[] args){
 
         Data backpool_servers_data = new Data();
-        int burstSize = 100;
 
         Server_UDP_Listener listener_udp = new Server_UDP_Listener(backpool_servers_data);
         Server_TCP_Listener listener_tcp = new Server_TCP_Listener(backpool_servers_data);
