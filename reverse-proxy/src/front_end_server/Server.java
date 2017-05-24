@@ -21,10 +21,12 @@ public class Server {
         Data backpool_servers_data = new Data();
         int burstSize = 100;
 
-        Server_UDP_Listener listener = new Server_UDP_Listener(backpool_servers_data);
+        Server_UDP_Listener listener_udp = new Server_UDP_Listener(backpool_servers_data);
+        Server_TCP_Listener listener_tcp = new Server_TCP_Listener(backpool_servers_data);
 
-        listener.start();
 
+        listener_udp.start();
+        listener_tcp.start();
 
 
         loadMenu();
@@ -38,7 +40,8 @@ public class Server {
             }
         } while (mainMenu.getOption()!=0);
 
-        listener.interrupt();
+        listener_udp.interrupt();
+        listener_tcp.interrupt();
         System.out.println("Bye!");
 
         /*PDUManager teste = new PDUManager();
