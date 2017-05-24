@@ -13,13 +13,17 @@ public class Monitor_Handler_Udp extends Thread{
 
     private Client_Info client_info;
     private PDUManager pdu;
+    private Data backpool_server_data;
     private int burstSize = 100;
+    private long timeout;
 
 
-    public Monitor_Handler_Udp(Client_Info client_info, int burstSize){
+    public Monitor_Handler_Udp(Client_Info client_info, Data backpool_server_data){
         this.client_info = client_info;
+        this.backpool_server_data = backpool_server_data;
         this.pdu = new PDUManager();
-        this.burstSize = burstSize;
+        this.burstSize = backpool_server_data.getBurstSize();
+        this.timeout = backpool_server_data.getTimeout();
     }
 
     /** Por cada pedido de monitoramento, uma thread é arrancada com o objectivo de mandar probes a cada 5 segundos */
@@ -27,19 +31,27 @@ public class Monitor_Handler_Udp extends Thread{
     public void run(){
         /** O tipo de cada probe no PDU genérico é 2 */
         this.pdu.setType(2);
+        /*
         try{
             this.pdu.setIp_address(InetAddress.getByName("192.168.1.172"));
         }catch (UnknownHostException e){
             System.out.println("Couldn't obtain server ip address");
             e.printStackTrace();
         }
-
+        */
+        this.pdu.setIp_address(client_info.getIp_address());
         System.out.println("Iniciando processo de envio");
 
         try{
             /** Criação do socket para envio dos PDUS */
             DatagramSocket client = new DatagramSocket();
             while(!Thread.interrupted()){
+                /** Verificaçao do ultimo registo do monitor */
+                if (System.currentTimeMillis() - client_info.getLastLog() > this.timeout) {
+                    System.out.println("Monitor " + client_info.getIp_address() + " foi interrompido");
+                    backpool_server_data.removeClient(client_info);
+                    Thread.currentThread().interrupt();
+                }
                 this.pdu.incrementCounter();
                 /** Preparação e envio de burst de pacotes a enviar */
                 for (int i = 0; i < this.burstSize; i++) {

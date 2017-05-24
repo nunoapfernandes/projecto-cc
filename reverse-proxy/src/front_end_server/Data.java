@@ -7,10 +7,14 @@ public class Data {
 
     PriorityQueue<Client_Info> ranking;
     HashMap<InetAddress,Client_Info> registo;
+    int burstSize;
+    long timeout;
 
     public Data() {
-       ranking = new PriorityQueue<Client_Info>(100,new ServerComparator());
-       registo = new HashMap<>();
+       this.ranking = new PriorityQueue<Client_Info>(100,new ServerComparator());
+       this.registo = new HashMap<>();
+       this.burstSize = 100;
+       this.timeout = 15000;
     }
 
     public void updateScore(Client_Info client_info) {
@@ -48,7 +52,7 @@ public class Data {
         updateScore(client_info);
     }
 
-    public void removeClientInfo(Client_Info ci) {
+    public void removeClient(Client_Info ci) {
         ranking.remove(ci);
         registo.remove(ci);
     }
@@ -57,6 +61,38 @@ public class Data {
 
     public boolean existsClient(InetAddress ip_address) {
         return registo.containsKey(ip_address);
+    }
+
+    public PriorityQueue<Client_Info> getRanking() {
+        return ranking;
+    }
+
+    public void setRanking(PriorityQueue<Client_Info> ranking) {
+        this.ranking = ranking;
+    }
+
+    public HashMap<InetAddress, Client_Info> getRegisto() {
+        return registo;
+    }
+
+    public void setRegisto(HashMap<InetAddress, Client_Info> registo) {
+        this.registo = registo;
+    }
+
+    public int getBurstSize() {
+        return burstSize;
+    }
+
+    public void setBurstSize(int burstSize) {
+        this.burstSize = burstSize;
+    }
+
+    public long getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(long timeout) {
+        this.timeout = timeout;
     }
 
     public void updateLastLog(InetAddress ip_address, long timestamp) {

@@ -13,13 +13,9 @@ import java.util.Map;
 public class Server_UDP_Listener extends Thread{
 
     private Data backpool_server_data;
-    private Map<InetAddress,Monitor_Handler_Udp> udp_handlers;
-    private int burstSize;
 
-    public Server_UDP_Listener(Data backpool_server_data, Map<InetAddress,Monitor_Handler_Udp> udp_handlers, int burstSize){
+    public Server_UDP_Listener(Data backpool_server_data){
         this.backpool_server_data = backpool_server_data;
-        this.udp_handlers = udp_handlers;
-        this.burstSize = burstSize;
     }
 
     @Override
@@ -33,7 +29,6 @@ public class Server_UDP_Listener extends Thread{
             while (!Thread.interrupted()){
                 DatagramPacket packet_received = new DatagramPacket(data_received,data_received.length);
                 incoming_socket.receive(packet_received);
-
                 pdu_received = new PDUManager(packet_received.getData());
 
                 /** Análise do PDU consoante tipo*/
@@ -42,13 +37,12 @@ public class Server_UDP_Listener extends Thread{
                     if (this.backpool_server_data.existsClient(pdu_received.getIp_address())) {
                         this.backpool_server_data.updateLastLog(pdu_received.getIp_address(), System.currentTimeMillis());
                     } else {
-                        Client_Info monitor = new Client_Info(pdu_received.getIp_address(), System.currentTimeMillis(), this.burstSize);
+                        Client_Info monitor = new Client_Info(pdu_received.getIp_address(), System.currentTimeMillis(), backpool_server_data.getBurstSize());
                         this.backpool_server_data.addClient(monitor);
                         /** Inicia nova thread de probing para o novo monitor */
-                        Monitor_Handler_Udp new_handler_monitor_udp = new Monitor_Handler_Udp(monitor, burstSize);
+                        Monitor_Handler_Udp new_handler_monitor_udp = new Monitor_Handler_Udp(monitor, this.backpool_server_data);
                         new_handler_monitor_udp.start();
                         /** Insere na lista de monitores já presentes */
-                        this.udp_handlers.put(monitor.getIp_address(),new_handler_monitor_udp);
                     }
                 } else if(pdu_received.getType() == 3) {
                     Client_Info monitor = this.backpool_server_data.getClientInfo(pdu_received.getIp_address());

@@ -19,10 +19,9 @@ public class Server {
     public static void main(String[] args){
 
         Data backpool_servers_data = new Data();
-        Map<InetAddress,Monitor_Handler_Udp> udp_handlers = new HashMap<>();
         int burstSize = 100;
 
-        Server_UDP_Listener listener = new Server_UDP_Listener(backpool_servers_data, udp_handlers, burstSize);
+        Server_UDP_Listener listener = new Server_UDP_Listener(backpool_servers_data);
 
         listener.start();
 
@@ -33,7 +32,7 @@ public class Server {
         do{
             mainMenu.executeMenu();
             switch (mainMenu.getOption()){
-                case 1: System.out.println("Number of servers being handled:" + udp_handlers.size());
+                case 1: System.out.println("Number of servers being handled:");
                         break;
                 case 2: break;
             }
