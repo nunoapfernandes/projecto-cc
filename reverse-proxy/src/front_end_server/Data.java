@@ -5,10 +5,10 @@ import java.util.*;
 
 public class Data {
 
-    PriorityQueue<Client_Info> ranking;
-    HashMap<InetAddress,Client_Info> registo;
-    int burstSize;
-    long timeout;
+    private PriorityQueue<Client_Info> ranking;
+    private HashMap<InetAddress,Client_Info> registo;
+    private int burstSize;
+    private long timeout;
 
     public Data() {
        this.ranking = new PriorityQueue<Client_Info>(100, new ServerComparator());
@@ -18,17 +18,17 @@ public class Data {
     }
 
     public synchronized void updateScore(Client_Info client_info) {
-        if (registo.containsKey(client_info.getIp_address())) {
-            Client_Info anterior = registo.get(client_info.getIp_address());
-            ranking.remove(anterior);
+        if (this.registo.containsKey(client_info.getIp_address())) {
+            Client_Info anterior = this.registo.get(client_info.getIp_address());
+            this.ranking.remove(anterior);
         }
         client_info.setScore(
                 client_info.getPacket_loss() * 0.3 +
                 client_info.getRound_trip_time() * 0.5 +
                 client_info.getTcp_connections() * 0.2
         );
-        ranking.add(client_info);
-        registo.put(client_info.getIp_address(),client_info);
+        this.ranking.add(client_info);
+        this.registo.put(client_info.getIp_address(),client_info);
     }
 
     public Client_Info nextserver(){
@@ -46,7 +46,6 @@ public class Data {
     }
 
     public synchronized void update(Client_Info client_info, long rtt, int pl){
-
         client_info.setPacket_loss(pl);
         client_info.setRound_trip_time(rtt);
         updateScore(client_info);
