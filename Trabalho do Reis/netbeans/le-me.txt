@@ -1,5 +1,0 @@
-boas,o codigo é isto, o problema ´q que diz que nao posso utilizar certos packages 
-
-boas,ja ta a funcionar como falamos, depois diz o que mais é preciso
-
-boas,ve como esta isto,nao estou a conseguir fazer melhor
