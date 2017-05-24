@@ -10,3 +10,4 @@
 
 .vscode/
 reverse-proxy/.*
+reverse-proxy/production/

@@ -6,12 +6,12 @@ import java.util.*;
 public class Data {
 
     private PriorityQueue<Client_Info> ranking;
-    private HashMap<InetAddress,Client_Info> registo;
+    private Map<InetAddress,Client_Info> registo;
     private int burstSize;
     private long timeout;
 
     public Data() {
-       this.ranking = new PriorityQueue<Client_Info>(100, new ServerComparator());
+       this.ranking = new PriorityQueue<>(100, new ServerComparator());
        this.registo = new HashMap<>();
        this.burstSize = 100;
        this.timeout = 15000;
@@ -53,7 +53,7 @@ public class Data {
 
     public synchronized void removeClient(Client_Info ci) {
         ranking.remove(ci);
-        registo.remove(ci);
+        registo.remove(ci.getIp_address());
     }
 
     public synchronized Client_Info getClientInfo(InetAddress inetAddress){ return this.registo.get(inetAddress); }
@@ -71,7 +71,7 @@ public class Data {
     }
 
     public synchronized HashMap<InetAddress, Client_Info> getRegisto() {
-        return registo;
+        return (HashMap<InetAddress,Client_Info>)registo;
     }
 
     public synchronized void setRegisto(HashMap<InetAddress, Client_Info> registo) {
@@ -108,5 +108,16 @@ public class Data {
             ranking.add(cliente);
             registo.put(cliente.getIp_address(), cliente);
         }
+    }
+
+    public int getNumberOfRegisteredMonitors(){
+        return this.registo.size();
+    }
+
+    public List<InetAddress> getIpAdresses(){
+        List<InetAddress> ips = new ArrayList<>();
+
+        this.ranking.forEach(c -> ips.add(c.getIp_address()));
+        return ips;
     }
 }

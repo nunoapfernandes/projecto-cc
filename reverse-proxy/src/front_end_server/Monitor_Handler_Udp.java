@@ -32,16 +32,8 @@ public class Monitor_Handler_Udp extends Thread{
     public void run(){
         /** O tipo de cada probe no PDU genérico é 2 */
         this.pdu.setType(2);
-        /*
-        try{
-            this.pdu.setIp_address(InetAddress.getByName("192.168.1.172"));
-        }catch (UnknownHostException e){
-            System.out.println("Couldn't obtain server ip address");
-            e.printStackTrace();
-        }
-        */
         this.pdu.setIp_address(client_info.getIp_address());
-        System.out.println("Iniciando processo de envio");
+        //System.out.println("Iniciando processo de envio");
 
         try{
             /** Criação do socket para envio dos PDUS */
@@ -61,14 +53,14 @@ public class Monitor_Handler_Udp extends Thread{
                     byte[] data = pdu.buildPDU();
                     DatagramPacket send_packet = new DatagramPacket(data,data.length,client_info.getIp_address(),5555);
                     client.send(send_packet);
-                    System.out.println(client_info.getIp_address());
                 }
-                System.out.println("Burst de " + this.burstSize + " pacotes enviado");
+                //System.out.println("Burst de " + this.burstSize + " pacotes enviado");
                 /** Timer para execução do ciclo a cada 5 segundos*/
                 Thread.sleep(5*1000);
-                System.out.println(this.pdu.getCounter());
             }
-        }catch (SocketException|InterruptedException e){
+        }catch(InterruptedException e){
+        }
+        catch (SocketException e){
             System.out.println("Socket Exception");
             e.printStackTrace();
         }catch (IOException e){

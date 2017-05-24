@@ -98,7 +98,7 @@ public class Client_Info {
             average += rtt;
         }
 
-        round_trip_time = average / this.rtTimes.size();
+        this.round_trip_time = average / this.rtTimes.size();
         if (this.rtTimes.size() != 0) {
             this.packet_loss = this.burstSize - this.rtTimes.size();
         } else {

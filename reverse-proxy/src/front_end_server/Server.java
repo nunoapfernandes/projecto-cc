@@ -7,6 +7,7 @@ import pdu_data.TypeNotFoundException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
@@ -32,9 +33,14 @@ public class Server {
         do{
             mainMenu.executeMenu();
             switch (mainMenu.getOption()){
-                case 1: System.out.println("Number of servers being handled:");
+                case 1: System.out.println("Number of servers being handled:" + backpool_servers_data.getNumberOfRegisteredMonitors());
                         break;
-                case 2: break;
+                case 2: System.out.println("Ips monitored");
+                        List<InetAddress> ips = backpool_servers_data.getIpAdresses();
+                        for(InetAddress ip : ips){
+                            System.out.println(ip.toString());
+                        }
+                        break;
             }
         } while (mainMenu.getOption()!=0);
 

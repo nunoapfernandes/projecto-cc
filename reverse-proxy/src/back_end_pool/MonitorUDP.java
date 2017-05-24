@@ -8,7 +8,7 @@ public class MonitorUDP {
 
     private static front_end_server.Menu mainMenu;
 
-    public static void main(String[] args)  {
+    public static void main(String[] args){
         try {
             InetAddress ip_address = getLocalHostLANAddress();
             DatagramSocket socket = new DatagramSocket(5555);
@@ -23,6 +23,9 @@ public class MonitorUDP {
             do {
                 mainMenu.executeMenu();
                 switch (mainMenu.getOption()) {
+                    case 2:
+                        System.out.println(ip_address.toString());
+                        break;
                     default:
                         break;
                 }
@@ -42,7 +45,8 @@ public class MonitorUDP {
 
     public static void loadMenu(){
         String[] main_menu = {
-                "Quit",
+                "Refresh",
+                "IP address"
         };
 
         mainMenu = new front_end_server.Menu(main_menu);

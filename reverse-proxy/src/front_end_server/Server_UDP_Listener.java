@@ -1,6 +1,7 @@
 package front_end_server;
 
 
+import back_end_pool.MonitorUDP;
 import pdu_data.PDUManager;
 
 import java.io.IOException;
@@ -8,14 +9,18 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class Server_UDP_Listener extends Thread{
 
     private Data backpool_server_data;
+    private List<Monitor_Handler_Udp> monitors;
 
     public Server_UDP_Listener(Data backpool_server_data){
         this.backpool_server_data = backpool_server_data;
+        this.monitors = new ArrayList<>();
     }
 
     @Override
@@ -41,6 +46,7 @@ public class Server_UDP_Listener extends Thread{
                         this.backpool_server_data.addClient(monitor);
                         /** Inicia nova thread de probing para o novo monitor */
                         Monitor_Handler_Udp new_handler_monitor_udp = new Monitor_Handler_Udp(monitor, this.backpool_server_data);
+                        this.monitors.add(new_handler_monitor_udp);
                         new_handler_monitor_udp.start();
                         /** Insere na lista de monitores já presentes */
                     }
@@ -62,6 +68,9 @@ public class Server_UDP_Listener extends Thread{
         }catch (IOException e){
             System.out.println("Error receiving data");
             e.printStackTrace();
+        }
+        for(Monitor_Handler_Udp monitorUDP: this.monitors){
+            monitorUDP.interrupt();
         }
     }
 }

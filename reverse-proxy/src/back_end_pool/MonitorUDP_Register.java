@@ -31,8 +31,6 @@ public class MonitorUDP_Register extends Thread {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        } catch (InterruptedException e) {}
     }
 }
