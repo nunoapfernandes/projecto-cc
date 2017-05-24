@@ -9,16 +9,20 @@ import java.net.*;
 
 public class MonitorUDP_Answer extends Thread {
 
+    private InetAddress MyIPAddress;
+    private DatagramSocket clientSocket;
+
+    public MonitorUDP_Answer(InetAddress ip_address, DatagramSocket datagramSocket){
+        this.MyIPAddress = ip_address;
+        this.clientSocket = datagramSocket;
+    }
+
     public void run() {
 
         try {
-            InetAddress MyIPAddress = null;
-            MyIPAddress = InetAddress.getByName("172.16.82.129");
-            InetAddress ServerIPAddress = InetAddress.getByName("192.168.1.172");
+            InetAddress ServerIPAddress = InetAddress.getByName("10.3.3.10");
 
-            DatagramSocket clientSocket = new DatagramSocket(5555);
-
-            while (true) {
+            while (!Thread.interrupted()) {
                 //RECEBE MENSAGEM E CONSTROI PDUManager
                 PDUManager messageReceived = new PDUManager();
                 byte[] receiveData = new byte[1024];
@@ -27,7 +31,7 @@ public class MonitorUDP_Answer extends Thread {
                 messageReceived.generatePDU(receiveData);
 
                 //ENVIA UM PDUManager DO TIPO ANSWER, COM O PRÓPRIO IP E O CONTADOR DA ULTIMA MENSAGEM QUE RECEBEU
-                PDUManager message = new PDUManager(3, MyIPAddress, messageReceived.getTimestamp(), messageReceived.getCounter());
+                PDUManager message = new PDUManager(3, this.MyIPAddress, messageReceived.getTimestamp(), messageReceived.getCounter());
                 DatagramPacket sendPacket = new DatagramPacket(message.buildPDU(), message.buildPDU().length, ServerIPAddress, 5555);
                 clientSocket.send(sendPacket);
             }

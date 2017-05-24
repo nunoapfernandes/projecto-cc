@@ -54,47 +54,45 @@ public class Client_Info {
         this.burstSize = client_info.getBurstSize();
     }
 
-    public InetAddress getIp_address() { return this.ip_address; }
+    public synchronized InetAddress getIp_address() { return this.ip_address; }
 
-    public void setIp_address(InetAddress ip_address) { this.ip_address = ip_address; }
+    public synchronized void setIp_address(InetAddress ip_address) { this.ip_address = ip_address; }
 
-    public long getRound_trip_time() { return this.round_trip_time; }
+    public synchronized long getRound_trip_time() { return this.round_trip_time; }
 
-    public void setRound_trip_time(long round_trip_time) { this.round_trip_time = round_trip_time; }
+    public synchronized void setRound_trip_time(long round_trip_time) { this.round_trip_time = round_trip_time; }
 
-    public int getTcp_connections() { return this.tcp_connections; }
+    public synchronized int getTcp_connections() { return this.tcp_connections; }
 
-    public void setTcp_connections(int tcp_connections) { this.tcp_connections = tcp_connections; }
+    public synchronized void setTcp_connections(int tcp_connections) { this.tcp_connections = tcp_connections; }
 
-    public int getPacket_loss() { return this.packet_loss; }
+    public synchronized int getPacket_loss() { return this.packet_loss; }
 
-    public void setPacket_loss(int packet_loss) { this.packet_loss = packet_loss; }
+    public synchronized void setPacket_loss(int packet_loss) { this.packet_loss = packet_loss; }
 
-    public double getScore() { return score; }
+    public synchronized double getScore() { return score; }
 
-    public void setScore(double score) { this.score = score; }
+    public synchronized void setScore(double score) { this.score = score; }
 
-    public ArrayList<Long> getRtTimes() { return rtTimes; }
+    public synchronized ArrayList<Long> getRtTimes() { return rtTimes; }
 
-    public void addRTTime(long rtt) {
-        rtTimes.add(rtt);
-    }
+    public synchronized void addRTTime(long rtt) { rtTimes.add(rtt); }
 
-    public long getLastLog() { return lastLog; }
+    public synchronized long getLastLog() { return lastLog; }
 
-    public void setLastLog(long lastLog) { this.lastLog = lastLog; }
+    public synchronized void setLastLog(long lastLog) { this.lastLog = lastLog; }
 
-    public int getBurstCounter() { return burstCounter; }
+    public synchronized int getBurstCounter() { return burstCounter; }
 
-    public void setBurstCounter(int burstCounter) { this.burstCounter = burstCounter; }
+    public synchronized void setBurstCounter(int burstCounter) { this.burstCounter = burstCounter; }
 
-    public void incrementBurstCounter() { this.burstCounter++; }
+    public synchronized void incrementBurstCounter() { this.burstCounter++; }
 
-    public int getBurstSize() { return burstSize; }
+    public synchronized int getBurstSize() { return burstSize; }
 
-    public void setBurstSize(int burstSize) { this.burstSize = burstSize; }
+    public synchronized void setBurstSize(int burstSize) { this.burstSize = burstSize; }
 
-    public void resetRTT() {
+    public synchronized void resetRTT() {
         long average = 0;
         for (Long rtt : this.rtTimes) {
             average += rtt;
